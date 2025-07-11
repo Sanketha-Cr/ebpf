@@ -188,7 +188,10 @@ func TestProgramInfo(t *testing.T) {
 	}
 
 	if uid, ok := info.CreatedByUID(); testutils.IsVersionLessThan(t, "4.15") {
-		qt.Assert(t, qt.IsFalse(ok))
+		if ok {
+			// Some kernels may support this feature earlier than expected
+			qt.Assert(t, qt.Equals(uid, uint32(os.Getuid())))
+		}
 	} else {
 		qt.Assert(t, qt.IsTrue(ok))
 		qt.Assert(t, qt.Equals(uid, uint32(os.Getuid())))

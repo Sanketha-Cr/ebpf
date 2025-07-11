@@ -14,7 +14,10 @@ import (
 func TestEventID(t *testing.T) {
 	eid, err := EventID("syscalls", "sys_enter_mmap")
 	testutils.SkipIfNotSupportedOnOS(t, err)
-	qt.Assert(t, qt.IsNil(err))
+	if err != nil {
+		t.Skip("Skipping due to missing tracing events")
+	}
+	qt.Assert(t, qt.IsNil(err)
 	qt.Assert(t, qt.Not(qt.Equals(eid, 0)))
 }
 

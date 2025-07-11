@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"math"
+	"runtime"
 	"testing"
 
 	"github.com/go-quicktest/qt"
