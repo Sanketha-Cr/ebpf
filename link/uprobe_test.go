@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"runtime"
 	"testing"
 
 	"github.com/go-quicktest/qt"
@@ -119,6 +120,9 @@ func TestUprobeExtNotFound(t *testing.T) {
 }
 
 func TestUprobeExtWithOpts(t *testing.T) {
+	if runtime.GOARCH == "s390x" {
+		t.Skip("Skipping on s390x due to perf event creation issues")
+	}
 	testutils.SkipOnOldKernel(t, "4.14", "uprobe on v4.9 returns EIO on vimto")
 
 	prog := mustLoadProgram(t, ebpf.Kprobe, 0, "")

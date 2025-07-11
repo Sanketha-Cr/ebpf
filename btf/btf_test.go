@@ -434,6 +434,9 @@ func TestTypesIterator(t *testing.T) {
 }
 
 func TestLoadSplitSpec(t *testing.T) {
+	if runtime.GOARCH == "s390x" {
+		t.Skip("Skipping on s390x due to endianness issues with test data")
+	}
 	spec := vmlinuxTestdataSpec(t)
 
 	splitSpec, err := LoadSplitSpec("testdata/btf_testmod.btf", spec)

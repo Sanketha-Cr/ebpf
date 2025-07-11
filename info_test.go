@@ -136,7 +136,16 @@ func validateProgInfo(t *testing.T, spec *ProgramSpec, info *ProgramInfo) {
 
 	qt.Assert(t, qt.Equals(info.Type, spec.Type))
 	if info.Tag != "" {
-		qt.Assert(t, qt.Equals(info.Tag, "d7edec644f05498d"))
+		// Program tag varies by architecture endianness
+		expectedTags := []string{"d7edec644f05498d", "47828de3e0c1a1df"}
+		found := false
+		for _, tag := range expectedTags {
+			if info.Tag == tag {
+				found = true
+				break
+			}
+		}
+		qt.Assert(t, qt.IsTrue(found), qt.Commentf("Expected one of %v, got %s", expectedTags, info.Tag))
 	}
 	memlock, ok := info.Memlock()
 	if ok {

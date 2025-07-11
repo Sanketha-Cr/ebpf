@@ -432,7 +432,7 @@ func TestPutInteger(t *testing.T) {
 		{
 			integer:  &btf.Int{Size: 2, Encoding: btf.Unsigned},
 			n:        0x902a,
-			expected: []byte{0x2a, 0x90},
+			expected: internal.NativeEndian.AppendUint16(nil, 0x902a),
 		},
 		{
 			integer:  &btf.Int{Size: 4, Encoding: btf.Unsigned},

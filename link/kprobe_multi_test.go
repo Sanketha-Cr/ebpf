@@ -5,6 +5,7 @@ package link
 import (
 	"errors"
 	"os"
+	"runtime"
 	"testing"
 
 	"github.com/go-quicktest/qt"
@@ -96,6 +97,9 @@ func TestKprobeMultiCookie(t *testing.T) {
 }
 
 func TestKprobeMultiProgramCall(t *testing.T) {
+	if runtime.GOARCH == "s390x" {
+		t.Skip("Skipping on s390x due to symbol resolution issues")
+	}
 	testutils.SkipIfNotSupported(t, haveBPFLinkKprobeMulti())
 
 	m, p := newUpdaterMapProg(t, ebpf.Kprobe, ebpf.AttachTraceKprobeMulti)

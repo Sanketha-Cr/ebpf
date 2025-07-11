@@ -71,6 +71,9 @@ func TestBuilderAdd(t *testing.T) {
 }
 
 func TestRoundtripVMlinux(t *testing.T) {
+	if runtime.GOARCH == "s390x" {
+		t.Skip("Skipping on s390x due to endianness issues with BTF test data")
+	}
 	types := typesFromSpec(t, vmlinuxSpec(t))
 
 	// Randomize the order to force different permutations of walking the type
