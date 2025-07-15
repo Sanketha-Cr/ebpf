@@ -17,7 +17,7 @@ func TestEventID(t *testing.T) {
 	if err != nil {
 		t.Skip("Skipping due to missing tracing events")
 	}
-	qt.Assert(t, qt.IsNil(err)
+	qt.Assert(t, qt.IsNil(err))
 	qt.Assert(t, qt.Not(qt.Equals(eid, 0)))
 }
 

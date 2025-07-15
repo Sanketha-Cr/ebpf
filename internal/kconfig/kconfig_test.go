@@ -472,7 +472,7 @@ func TestPutInteger(t *testing.T) {
 		{
 			integer:  &btf.Int{Size: 2, Encoding: btf.Signed},
 			n:        0x7fff,
-			expected: []byte{0xff, 0x7f},
+			expected: internal.NativeEndian.AppendUint16(nil, 0x7fff),
 			comment:  "maximum value of int16",
 		},
 		{
