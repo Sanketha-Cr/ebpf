@@ -86,7 +86,10 @@ var haveProgramTypeMatrix = internal.FeatureMatrix[ebpf.ProgramType]{
 		Fn: func() error {
 			// LircMode2 is not supported on s390x architecture
 			if runtime.GOARCH == "s390x" {
-				return ebpf.ErrNotSupported
+				return &internal.UnsupportedFeatureError{
+					Name:           "LircMode2",
+					MinimumVersion: internal.Version{},
+				}
 			}
 			return probeProgram(&ebpf.ProgramSpec{Type: ebpf.LircMode2})
 		},
