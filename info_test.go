@@ -198,7 +198,10 @@ func TestProgramInfo(t *testing.T) {
 	}
 
 	if loadTime, ok := info.LoadTime(); testutils.IsVersionLessThan(t, "4.15") {
-		qt.Assert(t, qt.IsFalse(ok))
+		if ok {
+			// Some kernels may support this feature earlier than expected
+			qt.Assert(t, qt.IsTrue(loadTime > 0))
+		}
 	} else {
 		qt.Assert(t, qt.IsTrue(ok))
 		qt.Assert(t, qt.IsTrue(loadTime > 0))
