@@ -81,16 +81,25 @@ var haveProgramTypeMatrix = internal.FeatureMatrix[ebpf.ProgramType]{
 		},
 	},
 	ebpf.LWTSeg6Local:          {Version: "4.18"},
-	ebpf.LircMode2: {
-		Version: "4.18",
-		Fn: func() error {
-			// LircMode2 is not supported on s390x architecture
-			if runtime.GOARCH == "s390x" {
-				return ebpf.ErrNotSupported
+	ebpf.LircMode2: func() *internal.FeatureTest {
+		// LircMode2 is not supported on s390x architecture
+		if runtime.GOARCH == "s390x" {
+			return &internal.FeatureTest{
+				Name: "LircMode2",
+				// No version set for unsupported architectures
+				Fn: func() error {
+					return ebpf.ErrNotSupported
+				},
 			}
-			return probeProgram(&ebpf.ProgramSpec{Type: ebpf.LircMode2})
-		},
-	},
+		}
+		return &internal.FeatureTest{
+			Name:    "LircMode2",
+			Version: "4.18",
+			Fn: func() error {
+				return probeProgram(&ebpf.ProgramSpec{Type: ebpf.LircMode2})
+			},
+		}
+	}(),
 	ebpf.SkReuseport:           {Version: "4.19"},
 	ebpf.FlowDissector:         {Version: "4.20"},
 	ebpf.CGroupSysctl:          {Version: "5.2"},
