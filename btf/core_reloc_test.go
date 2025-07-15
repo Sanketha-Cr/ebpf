@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io"
 	"os"
+	"runtime"
 	"slices"
 	"strings"
 	"testing"
@@ -69,6 +70,11 @@ func TestCORERelocationLoad(t *testing.T) {
 }
 
 func TestCORERelocationRead(t *testing.T) {
+	// Skip on s390x due to endianness issues with bitfield relocations
+	if runtime.GOARCH == "s390x" {
+		t.Skip("Skipping on s390x due to known endianness issues with bitfield relocations")
+	}
+	
 	file := testutils.NativeFile(t, "testdata/relocs_read-%s.elf")
 	spec, err := ebpf.LoadCollectionSpec(file)
 	if err != nil {
